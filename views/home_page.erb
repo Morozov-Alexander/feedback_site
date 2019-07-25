@@ -6,6 +6,33 @@
     <a class="nav-link" href="/sign_up">Sign up</a>
   </li>
 </ul>
+<style >
+  @import url('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css');
+
+html,
+body {
+  height: 100%;
+}
+
+.carousel,
+.carousel-inner,
+.carousel-inner .item,
+.carousel-inner img {
+  height: 900px ;
+  width: 100% ;
+}
+.carousel {
+
+        color: white;
+        border-radius: 1em;
+        padding: 1em;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-right: -50%;
+        transform: translate(-50%, -50%) }
+}
+</style>
 <div class="bd-example">
   <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
     <ol class="carousel-indicators">
@@ -14,17 +41,17 @@
     </ol>
     <div class="carousel-inner">
       <div class="carousel-item active">
-        <img src="https://mcdonalds.kz/uploads/restaurants/799jFRY8O4.jpeg" class="d-block w-80">
+        <img src="https://mcdonalds.kz/uploads/restaurants/799jFRY8O4.jpeg" class="d-block w-100" class = "a">
         <div class="carousel-caption d-none d-md-block">
-         <font color="yellow"> <h5><li><%= @restaurants[0].name %></li></h5></font>
-          <h5><p><%= @restaurants[0].short_description %></p></h5>
+         <font color="yellow"> <h1><li><%= @restaurants[0].name %></li></h1></font>
+          <h2><p><%= @restaurants[0].short_description %></p></h2>
         </div>
       </div>
       <div class="carousel-item">
-        <img src="https://schastye.com/public/img/rubik/rubik-1600.jpg" class="d-block w-80" alt="...">
+        <img src="https://schastye.com/public/img/rubik/rubik-1600.jpg" class="d-block w-100" alt="..." class = "a">
         <div class="carousel-caption d-none d-md-block">
-          <h5> <li><%= @restaurants[1].name %></li></h5>
-          <h5> <p><%= @restaurants[1].short_description %></p></h5>
+           <font color="yellow"> <h1><li><%= @restaurants[1].name %></li></h1></font>
+          <h2><p><%= @restaurants[1].short_description %></p></h2>
         </div>
       </div>
       <
