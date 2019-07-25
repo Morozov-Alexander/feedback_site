@@ -5,5 +5,7 @@ source "https://rubygems.org"
 gem "sinatra-activerecord"
 gem 'sqlite3'
 gem "rake"
+gem 'email_address'
+gem 'sinatra-flash', '~> 0.3.0'
 
 # gem "rails"
