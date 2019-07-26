@@ -4,10 +4,15 @@ require 'sinatra/activerecord'
 require 'email_address'
 require 'erb'
 require 'sinatra/flash'
+require 'bcrypt'
 require_relative './app/models/users'
 require_relative './app/models/restaurants'
 require_relative './app/models/comments'
+require_relative 'session_controller'
+require_relative './app/helpers/user_helper'
 class Controller < Sinatra::Base
+  include UserHelper
+  include BCrypt
   enable :sessions
   register Sinatra::ActiveRecordExtension
   register Sinatra::Flash
@@ -24,21 +29,27 @@ class Controller < Sinatra::Base
     erb :sign_in
   end
 
-  post '/check' do
-    p params
-    redirect '/sign_up'
-  end
-
   post '/login' do
-
+    login(params)
+    redirect '/'
   end
+
+
   post '/registration' do
-    p params
     erb :error unless EmailAddress.valid?(params["login"])
+
+    erb :error unless valid_password?(params)
+    create_user(params)
   end
 
   get '/error' do
     "error"
   end
 
+
+
 end
+# {"username"=>"JetNickson", "email"=>"kirillverenih@ya.ru", "password"=>"1", "confirm_password"=>"1"}
+# t.string "name"
+# t.string "email"
+# t.string "password"
