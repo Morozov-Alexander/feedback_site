@@ -11,17 +11,29 @@ require_relative './app/models/comments'
 require_relative 'session_controller'
 require_relative './app/helpers/user_helper'
 class Controller < Sinatra::Base
-  include UserHelper
-  include BCrypt
-  enable :sessions
   register Sinatra::ActiveRecordExtension
   register Sinatra::Flash
+  include UserHelper
+  include BCrypt
+  configure do
+    enable :sessions
+    set :session_secret, 'qwe'
+  end
+
   get '/' do
+    flash[:danger] = "fwef"
     @restaurants = Restaurant.all
     erb :home_page
   end
+  post '/rate' do
+    p session
+  end
 
   get '/sign_up' do
+    erb :sign_up
+  end
+
+  get '/deleteMessageFromSession' do
     erb :sign_up
   end
 
@@ -29,27 +41,24 @@ class Controller < Sinatra::Base
     erb :sign_in
   end
 
+  get '/:name' do
+  @rest = Restaurant.all.find_by(name:params[:name])
+    erb :page_about_restaurant
+  end
+
   post '/login' do
     login(params)
     redirect '/'
   end
 
-
   post '/registration' do
-    erb :error unless EmailAddress.valid?(params["login"])
+    session[:message] = "Удались" unless EmailAddress.valid?(params["login"])
 
     erb :error unless valid_password?(params)
     create_user(params)
   end
-
   get '/error' do
     "error"
   end
 
-
-
 end
-# {"username"=>"JetNickson", "email"=>"kirillverenih@ya.ru", "password"=>"1", "confirm_password"=>"1"}
-# t.string "name"
-# t.string "email"
-# t.string "password"
