@@ -1,27 +1,49 @@
+# frozen_string_literal: true
+
+require 'bcrypt'
+require 'email_address'
 module UserHelper
-  def create_user(params)
+  include BCrypt
+
+  def create_user
     @user = User.new
-    @user.name = (params[:username])
+    @user.name = params[:username]
     @user.email = params[:email]
     @user.password = params[:password]
     @user.save!
   end
 
-  def valid_password?(params)
-    params["password"] == params["confirm_password"]
+  def sign_up
+    already_registered if find_user_in_db
+    invalid_email unless valid_email?
+    password_should_be_the_same unless password_and_confirm_password?
+    create_user
+    session[:login] = true
   end
 
-  def login(session)
-    @user = User.find_by(email:params[:email])
-    p params
-    if @user.password_hash == params[:password]
-      session[:login] = true
-      p 1
-    else
-      session[:login] = false
-      p 2
-    end
-   p session
+  def login
+    no_email_in_db unless find_user_in_db
+    invalid_password unless right_password?
+    session[:login] = true
   end
 
+  def password_and_confirm_password?
+    params[:password] == params[:confirm_password]
+  end
+
+  def find_user_in_db
+    @user = User.find_by(email: params[:email])
+  end
+
+  def right_password?
+    Password.new(@user.password_hash) == params[:password]
+  end
+
+  def valid_email?
+    EmailAddress.valid?(params[:email])
+  end
+
+  def login?
+    session[:login]
+  end
 end
