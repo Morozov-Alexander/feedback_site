@@ -6,6 +6,8 @@
     <blockquote class="blockquote mb-3">
       <p><h3><%=  @rest.short_description %></h3></p>
       <footer class="blockquote-footer"><h4><%=  @rest.full_description %></h4></footer>
+      <footer class="blockquote-footer"><h4><%=  @rest.address %></h4></footer>
+      <footer class="blockquote-footer"><h4>Average mark ---- <%= @average_mark.round(1) %></h4></footer>
     </blockquote>
   </div>
 </div>
@@ -54,7 +56,24 @@
   .mar-top {
     margin-top: 15px;
   }
+    .abcd {
+      border-color: #cacd58 #5faf8a #b9cea5 #aab238;
+      border-width: 5px;
+      box-sizing: border-box !important;
+      width: 500px;
+    }
 </style>
+
+<% Comment.all.where(place_id: session[:rest_id]).each do |comment| %>
+  <div class=" abcd card mt-5 ml-5" style="box-sizing: border-box">
+    <div class="card-body">
+      <h5 class="card-title"> <%= User.find_by(id: comment.user_id).name %> </h5>
+      <p class="card-text"> <%= comment.text%>. Grade - <%= comment.grade%> </p>
+      <p class="card-text">  </p>
+    </div>
+  </div>
+<% end %>
+
 <form  method="post" action="/rate">
 <section class="container">
   <div class="row">

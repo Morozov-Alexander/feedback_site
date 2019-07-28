@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 require 'bcrypt'
 require 'email_address'
 module UserHelper
@@ -18,13 +17,13 @@ module UserHelper
     invalid_email unless valid_email?
     password_should_be_the_same unless password_and_confirm_password?
     create_user
-    session[:login] = true
+    session[:user_id] = @user.id
   end
 
   def login
     no_email_in_db unless find_user_in_db
     invalid_password unless right_password?
-    session[:login] = true
+    session[:user_id] = @user.id
   end
 
   def password_and_confirm_password?
@@ -44,6 +43,10 @@ module UserHelper
   end
 
   def login?
-    session[:login]
+    session[:user_id]
+  end
+
+  def logout
+    session[:user_id].delete
   end
 end
