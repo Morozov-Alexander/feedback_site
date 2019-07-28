@@ -7,10 +7,19 @@ module RestaurantHelper
   end
 
   def info_about_selected_cafe
-    redirect 'sign_in' unless login?
     @rest = Restaurant.all.find_by(name: params[:name])
     session[:rest_id] = @rest.id
     average_cafe_mark
   end
-
+  def good_mark?
+    params[:rate].to_i > 2
+  end
+  def ask_about_comment
+    return if comment?
+    flash[:danger] = 'Add comment!!!!!!!!'
+    redirect "/#{session[:cafe_name]}"
+  end
+  def comment?
+    params[:text].length > 1
+  end
 end

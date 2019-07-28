@@ -7,7 +7,6 @@ require 'sinatra/flash'
 require_relative './app/models/users'
 require_relative './app/models/restaurants'
 require_relative './app/models/comments'
-require_relative 'session_controller'
 require_relative './app/helpers/user_helper'
 require_relative './app/helpers/comment_helper'
 require_relative './app/helpers/messages_helper'
@@ -38,18 +37,19 @@ class Controller < Sinatra::Base
     erb :sign_in
   end
 
-  get '/:name' do
-    session[:cafe_name] = params[:name]
-    info_about_selected_cafe
-    erb :page_about_restaurant
-  end
-
   post '/login' do
     login
     redirect '/'
   end
 
+  get '/logout' do
+    logout
+    redirect '/'
+  end
+
   post '/rate' do
+    redirect 'sign_in' unless login?
+    ask_about_comment unless good_mark?
     create_comment
     redirect "/#{session[:cafe_name]}"
   end
@@ -57,6 +57,12 @@ class Controller < Sinatra::Base
   post '/registration' do
     sign_up
     redirect '/'
+  end
+
+  get '/:name' do
+    session[:cafe_name] = params[:name]
+    info_about_selected_cafe
+    erb :page_about_restaurant
   end
 
 end

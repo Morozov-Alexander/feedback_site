@@ -19,8 +19,11 @@ module UserHelper
     create_user
     session[:user_id] = @user.id
   end
-
+  def logout
+    session[:user_id] = nil
+  end
   def login
+    logout if login?
     no_email_in_db unless find_user_in_db
     invalid_password unless right_password?
     session[:user_id] = @user.id
@@ -46,7 +49,5 @@ module UserHelper
     session[:user_id]
   end
 
-  def logout
-    session[:user_id].delete
-  end
+
 end
