@@ -1,0 +1,6 @@
+.DS_Store
+*.mov
+.idea
+db/*.sqlite
+.env
+/restaurant_descriptions
